@@ -1,21 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar'
+import * as React from 'react'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { BreadProvider } from 'material-bread'
+
+import { Navigation } from './src/components/root'
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <SafeAreaProvider>
+      <BreadProvider>
+        <Navigation />
+      </BreadProvider>
       <StatusBar style="auto" />
-    </View>
-  );
+    </SafeAreaProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
