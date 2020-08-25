@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Image, StyleSheet } from 'react-native'
+import { StyleSheet, ActivityIndicator } from 'react-native'
+import { Image } from 'react-native-elements'
 import { ListItem, Avatar } from 'material-bread'
 
 import _ from 'lodash'
@@ -14,7 +15,7 @@ function getAvatarProps(profileImage, profileImageSize) {
     return { type, content: value, contentColor: '#ececec', color: '#a3a3a3', size }
   } else if (type === 'https:' || type === 'http:') {
     // console.log('<<<AVATAR - uri', profileImage)
-    return { type: 'image', image: (<Image source={{ uri: profileImage }} />), size }
+    return { type: 'image', image: (<Image PlaceholderContent={<ActivityIndicator />} source={{ uri: profileImage }} />), size }
   }
 }
 

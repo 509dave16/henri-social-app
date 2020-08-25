@@ -1,5 +1,6 @@
 import * as React from 'react'
-import  { View, Image, Text, StyleSheet } from 'react-native'
+import  { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
+import { Image } from 'react-native-elements'
 import { Card, CardActions, CardContent, CardMedia, IconButton, Button, Icon, List, TextField } from 'material-bread'
 import { connectActionSheet } from '@expo/react-native-action-sheet'
 
@@ -11,6 +12,7 @@ import { connect, useDispatch } from 'react-redux'
 import * as selectors from '../../../state/selectors'
 import * as actions from '../../../state/actions'
 import { getPostComments } from '../../../services/jsonPlaceholder'
+import { postPixelsWidth, postPixelsHeight } from '../../../config/dimensions'
 
 async function fetchComments(post, dispatch, setCommentsFetched) {
   const response = await getPostComments(post.id)
@@ -52,9 +54,10 @@ function Post({ post, comments = [], showActionSheetWithOptions, editMode = fals
         <CardMedia
           image={
             <Image
-              style={{ flex: 1, width: '100%' }}
+              style={{ width: postPixelsWidth, height: postPixelsHeight }}
               source={{uri: post.upload }}
               resizeMode="cover"
+              PlaceholderContent={<ActivityIndicator />}
             />
           }
         />

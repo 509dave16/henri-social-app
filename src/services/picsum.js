@@ -1,12 +1,5 @@
-import { Dimensions, PixelRatio } from 'react-native'
-
 import { PICSUM_API_URL } from '../config/env'
-
-const postPixelsWidth = PixelRatio.roundToNearestPixel(Dimensions.get('screen').width)
-const postPixelsHeight = Math.floor(postPixelsWidth * 0.66)
-
-const commentImagePixelsWidth = PixelRatio.roundToNearestPixel(30)
-const commentImagePixelsHeight = commentImagePixelsWidth
+import { postPixelsWidth, postPixelsHeight, commentImagePixelsWidth, commentImagePixelsHeight } from '../config/dimensions'
 
 export async function getPhotos() {
   const response = await fetch(`${PICSUM_API_URL}/v2/list?limit=100`)
