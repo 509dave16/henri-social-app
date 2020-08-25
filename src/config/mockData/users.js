@@ -5,7 +5,6 @@ export default [
     profileImage: 'icon/face',
     email: 'sincere@april.biz',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 2,
@@ -13,15 +12,13 @@ export default [
     profileImage: 'icon/face',
     email: 'Shanna@melissa.tv',
     phone: '123456789',
-    phoneCountryCode: '1',
-  },
+      },
   {
     id: 3,
     name: 'Clementine Bauch',
     profileImage: 'icon/face',
     email: 'Nathan@yesenia.net',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 4,
@@ -29,7 +26,6 @@ export default [
     profileImage: 'icon/face',
     email: 'Julianne.OConner@kory.org',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 5,
@@ -37,7 +33,6 @@ export default [
     profileImage: 'icon/face',
     email: 'Lucio_Hettinger@annie.ca',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 6,
@@ -45,7 +40,6 @@ export default [
     profileImage: 'icon/face',
     email: 'Karley_Dach@jasper.info',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 7,
@@ -53,7 +47,6 @@ export default [
     profileImage: 'icon/face',
     email: 'Telly.Hoeger@billy.biz',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 8,
@@ -61,7 +54,6 @@ export default [
     profileImage: 'icon/face',
     email: 'Sherwood@rosamond.me',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
   {
     id: 9,
@@ -69,6 +61,5 @@ export default [
     profileImage: 'icon/face',
     email: 'Chaim_McDermott@dana.io',
     phone: '123456789',
-    phoneCountryCode: '1',
   },
 ]
