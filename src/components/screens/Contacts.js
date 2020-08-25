@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import { Avatar } from 'material-bread'
+import { useScrollToTop } from '@react-navigation/native'
 
 import ProfileBanner from '../widgets/ProfileBanner'
 import LoadingIndicator from '../widgets/LoadingIndicator'
@@ -42,6 +43,8 @@ function keyExtractor(user) {
 
 function Contacts({ users = mockUsers}) {
   const dispatch = useDispatch()
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
   React.useEffect(() => {
     !debug && fetchUsers(dispatch)
     return () => {}
@@ -52,6 +55,7 @@ function Contacts({ users = mockUsers}) {
   }
   return (
     <FlatList
+      ref={ref}
       style={styles.list}
       data={users}
       renderItem={renderItem}

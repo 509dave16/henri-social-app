@@ -1,6 +1,6 @@
 import * as React from 'react'
 import  { View, Image, Text, StyleSheet } from 'react-native'
-import { Card, CardActions, CardContent, CardMedia, IconButton, Button, Icon, List } from 'material-bread'
+import { Card, CardActions, CardContent, CardMedia, IconButton, Button, Icon, List, TextField } from 'material-bread'
 import { connectActionSheet } from '@expo/react-native-action-sheet'
 
 import ProfileBanner from '../../widgets/ProfileBanner'
@@ -30,7 +30,7 @@ function getOpenActionSheetArgs(post, dispatch) {
   ]
 }
 
-function Post({ post, comments = [], showActionSheetWithOptions }) {
+function Post({ post, comments = [], showActionSheetWithOptions, editMode = false, updatePostField }) {
   const [viewComments, setViewComments] = React.useState(false)
   const [commentsFetched, setCommentsFetched] = React.useState(false)
   const dispatch = useDispatch()
@@ -47,7 +47,7 @@ function Post({ post, comments = [], showActionSheetWithOptions }) {
           profileImage={post.user.profileImage}
           text={post.user.name}
           secondaryText={post.user.email}
-          actionItem={<IconButton name="more-vert" size={24} onPress={() => showActionSheetWithOptions(...args)} />}
+          actionItem={!editMode && <IconButton name="more-vert" size={24} onPress={() => showActionSheetWithOptions(...args)} />}
         />
         <CardMedia
           image={
@@ -59,39 +59,52 @@ function Post({ post, comments = [], showActionSheetWithOptions }) {
           }
         />
         <CardContent>
-          <Text style={{ color: 'rgba(0,0,0,.6)', fontSize: 16, fontWeight: '600', marginBottom: 6 }}>
-            {post.title}
-          </Text>
-          <Text style={{ color: 'rgba(0,0,0,.6)', fontSize: 14 }}>
-            {post.story}
-          </Text>
+          { !editMode ? (
+            <React.Fragment>
+              <Text style={{ color: 'rgba(0,0,0,.6)', fontSize: 16, fontWeight: '600', marginBottom: 6 }}>
+                {post.title}
+              </Text>
+              <Text style={{ color: 'rgba(0,0,0,.6)', fontSize: 14 }}>
+                {post.story}
+              </Text>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <TextField type="outlined" label="Title" value={post.title} onChangeText={value => updatePostField('title', value)} />
+              <TextField type="outlined" label="Story" value={post.story} onChangeText={value => updatePostField('story', value)} />
+            </React.Fragment>
+           
+          )}
+         
         </CardContent>
-        <CardActions
-          rightActionItems={[
-            viewComments && (
-              <Button
-                key="close"
-                type="text" 
-                text="Hide Comments"
-                icon={<Icon name="keyboard-arrow-down" />}
-                iconSize={30}
-                iconPosition="right"
-                onPress={() => setViewComments(false)}
-              />
-            ),
-            !viewComments && (
-              <Button
-                key="open"
-                type="text" 
-                text="Show Comments"
-                icon={<Icon name="keyboard-arrow-right" />}
-                iconSize={30}
-                iconPosition="right"
-                onPress={() => setViewComments(true)}
-              />
-            ),
-          ].filter(action => action)}
-        />
+        { !editMode ? (
+          <CardActions
+            rightActionItems={[
+              viewComments && (
+                <Button
+                  key="close"
+                  type="text" 
+                  text="Hide Comments"
+                  icon={<Icon name="keyboard-arrow-down" />}
+                  iconSize={30}
+                  iconPosition="right"
+                  onPress={() => setViewComments(false)}
+                />
+              ),
+              !viewComments && (
+                <Button
+                  key="open"
+                  type="text" 
+                  text="Show Comments"
+                  icon={<Icon name="keyboard-arrow-right" />}
+                  iconSize={30}
+                  iconPosition="right"
+                  onPress={() => setViewComments(true)}
+                />
+              ),
+            ].filter(action => action)}
+          />
+        ) : null }
         { viewComments ? 
             comments.length ? (
               <List>

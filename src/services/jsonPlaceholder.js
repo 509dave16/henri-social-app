@@ -25,7 +25,7 @@ function getPostFromJson(json = {}) {
     title: json.title,
     story: json.body,
     userId: json.userId,
-    upload: getSeededPostUpload(`post${json.id}`)
+    upload: getSeededPostUpload(`post${json.id}`),
   }
 }
 
@@ -66,7 +66,7 @@ async function jsonPlaceholderRequest(resource, options = {}, transformData) {
 
   try {
     const response = await fetch(getRequest(resource, options))
-    const json = await response.json()
+    let json = await response.json()
 
     // console.log('<<<jsonPlaceholderRequest', json)
 
@@ -77,6 +77,9 @@ async function jsonPlaceholderRequest(resource, options = {}, transformData) {
       state = ApiResponseState.EMPTY
       result = null
     } else {
+      if (resource === 'posts') {
+        json = _.shuffle(json)
+      }
       result = transformData(json)
     }
   } catch (error) {
@@ -98,12 +101,8 @@ export async function getUsers(options) {
   return response
 }
 
-export async function getPosts(options) {
-  const response = await jsonPlaceholderRequest('posts', options, getResourcesFromJsonHOF(getPostFromJson))
-  if (response.state === ApiResponseState.SUCCESS) {
-    response.result = _.shuffle(response.result)
-  }
-  return response
+export function getPosts(options) {
+  return jsonPlaceholderRequest('posts', options, getResourcesFromJsonHOF(getPostFromJson))
 }
 
 export function getPostComments(postId, options) {

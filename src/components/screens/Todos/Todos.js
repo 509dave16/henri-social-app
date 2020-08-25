@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { FlatList, StyleSheet } from 'react-native'
+import { useScrollToTop } from '@react-navigation/native'
 
 import LoadingIndicator from '../../widgets/LoadingIndicator'
 import Todo from './Todo'
@@ -35,6 +36,9 @@ function keyExtractor(todo) {
 
 
 function Todos({ todos = mockTodos }) {
+  const ref = React.useRef(null)
+  useScrollToTop(ref)
+
   const [todosState, setTodosState] = React.useState(todos)
   React.useEffect(() => {
     !debug && fetchTodos(setTodosState)
@@ -55,6 +59,7 @@ function Todos({ todos = mockTodos }) {
 
   return (
     <FlatList
+      ref={ref}
       style={styles.list}
       data={todosState}
       renderItem={renderItemHOF(onPress)}
