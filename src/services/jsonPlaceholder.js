@@ -98,8 +98,12 @@ export async function getUsers(options) {
   return response
 }
 
-export function getPosts(options) {
-  return jsonPlaceholderRequest('posts', options, getResourcesFromJsonHOF(getPostFromJson))
+export async function getPosts(options) {
+  const response = await jsonPlaceholderRequest('posts', options, getResourcesFromJsonHOF(getPostFromJson))
+  if (response.state === ApiResponseState.SUCCESS) {
+    response.result = _.shuffle(response.result)
+  }
+  return response
 }
 
 export function getPostComments(postId, options) {
