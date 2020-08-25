@@ -1,39 +1,63 @@
 import * as React from 'react'
-import { StyleSheet, ScrollView } from 'react-native'
-import { List } from 'material-bread'
+import { StyleSheet, FlatList } from 'react-native'
+import { Avatar } from 'material-bread'
 
 import ProfileBanner from '../widgets/ProfileBanner'
 import LoadingIndicator from '../widgets/LoadingIndicator'
 
+import { connect, useDispatch } from 'react-redux'
 import { getUsers } from '../../services/jsonPlaceholder'
 import users from '../../config/mockData/users'
-
+import * as actions from '../../state/actions'
+import * as selectors from '../../state/selectors'
 
 const debug = false
 const mockUsers = debug ? users : []
 
-async function fetchUsers(setUsersState) {
+async function fetchUsers(dispatch) {
   const response = await getUsers()
-  // console.log('<<<TODOS - ', response.result[0])
-  setUsersState(response.result)
+  dispatch(actions.ormInsertUsers(response.result))
+}
+
+function renderItem({ item: user }) {
+  return (
+    <ProfileBanner 
+      key={`user${user.id}`}
+      profileImage={user.profileImage}
+      text={user.name}
+      secondaryText={user.email}
+      actionItem={<Avatar type="icon" content="phone" size={40} color="white" contentColor="green" />}
+    />
+  )
+}
+
+const itemHeight = 74
+function getItemLayout(data, index) {
+  return { length: itemHeight, offset: itemHeight * index, index }
+}
+
+function keyExtractor(user) {
+  return `${user.id}`
 }
 
 function Contacts({ users = mockUsers}) {
-  const [usersState, setUsersState] = React.useState(users)
+  const dispatch = useDispatch()
   React.useEffect(() => {
-    !debug && fetchUsers(setUsersState)
+    !debug && fetchUsers(dispatch)
     return () => {}
   }, [])
-  
-  if (usersState.length === 0) {
+
+  if (users.length === 0) {
     return <LoadingIndicator />
   }
   return (
-    <ScrollView>
-      <List style={styles.list}>
-        { usersState.map(user => <ProfileBanner key={user.id} profileImage={user.profileImage} text={user.name} secondaryText={user.email} />)}
-      </List>
-    </ScrollView>
+    <FlatList
+      style={styles.list}
+      data={users}
+      renderItem={renderItem}
+      getItemLayout={getItemLayout}
+      keyExtractor={keyExtractor}
+    />
   )
 }
 
@@ -43,4 +67,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Contacts
+const mapStateToProps = (state) => ({ users: selectors.users(state) })
+export default connect(mapStateToProps)(Contacts)
