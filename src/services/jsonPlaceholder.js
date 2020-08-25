@@ -1,5 +1,7 @@
-import _ from 'lodash'
 
+import _ from 'lodash'
+import { getUIFaces } from './uiFaces'
+import { getSeededPostUpload, getSeededCommentProfileImage } from './picsum'
 import { JSON_PLACEHOLDER_API_URL } from '../config/env'
 
 const  ApiResponseState = {
@@ -23,11 +25,18 @@ function getPostFromJson(json = {}) {
     title: json.title,
     story: json.body,
     userId: json.userId,
+    upload: getSeededPostUpload(`post${json.id}`)
   }
 }
 
 function getCommentFromJson(json = {}) {
-  return json
+  return {
+    id: json.id,
+    postId: json.postId,
+    name: json.name,
+    profileImage: getSeededCommentProfileImage(`comment${json.id}`),
+    body: json.body,
+  }
 }
 
 function getTodoFromJson(json = {}) {
@@ -41,7 +50,6 @@ function getTodoFromJson(json = {}) {
 function getResourcesFromJsonHOF(transformData) {
   return (json) => json.map(item => transformData(item))
 }
-
 
 function getRequest(resource, options) {
   let url = `${JSON_PLACEHOLDER_API_URL}/${resource}`
@@ -80,7 +88,14 @@ async function jsonPlaceholderRequest(resource, options = {}, transformData) {
 }
 
 export async function getUsers(options) {
- return jsonPlaceholderRequest('users', options, getResourcesFromJsonHOF(getUserFromJson))
+  const response = await jsonPlaceholderRequest('users', options, getResourcesFromJsonHOF(getUserFromJson))
+  if (response.state === ApiResponseState.SUCCESS) {
+    const uiFaces = await getUIFaces()
+    response.result.forEach((user, index) => {
+      user.profileImage = uiFaces[index].photo
+    })
+  }
+  return response
 }
 
 export function getPosts(options) {
@@ -88,7 +103,7 @@ export function getPosts(options) {
 }
 
 export function getPostComments(postId, options) {
-  return jsonPlaceholderRequest(`posts/${postId}/comments`, options, getResourcesFromJsonHOF(getsCommentFromJson))
+  return jsonPlaceholderRequest(`posts/${postId}/comments`, options, getResourcesFromJsonHOF(getCommentFromJson))
 }
 
 export function getTodos(options) {
