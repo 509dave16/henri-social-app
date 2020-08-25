@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { ScrollView, Text, StyleSheet } from 'react-native'
-import { List } from 'material-bread'
+import { FlatList, StyleSheet } from 'react-native'
 
 import LoadingIndicator from '../../widgets/LoadingIndicator'
 import Todo from './Todo'
@@ -14,9 +13,26 @@ let mockTodos = debug ? todos : []
 
 async function fetchTodos(setTodosState) {
   const response = await getTodos()
-  // console.log('<<<TODOS - ', response.result[0])
   setTodosState(response.result)
 }
+
+function renderItem({ item: todo, index }, onPress) {
+  return (<Todo key={todo.id} todo={todo} text={todo.description} onPress={onPress}/>)
+}
+
+function renderItemHOF(onPress) {
+  return (itemConfig) => renderItem(itemConfig, onPress)
+}
+
+const itemHeight = 68
+function getItemLayout(data, index) {
+  return { length: itemHeight, offset: itemHeight * index, index }
+}
+
+function keyExtractor(todo) {
+  return `${todo.id}`
+}
+
 
 function Todos({ todos = mockTodos }) {
   const [todosState, setTodosState] = React.useState(todos)
@@ -38,11 +54,14 @@ function Todos({ todos = mockTodos }) {
   }
 
   return (
-    <ScrollView>
-      <List style={styles.list}>
-        { todosState.map(todo => <Todo key={todo.id} todo={todo} text={todo.description} onPress={onPress}/>)}
-      </List>
-    </ScrollView>
+    <FlatList
+      style={styles.list}
+      data={todosState}
+      renderItem={renderItemHOF(onPress)}
+      getItemLayout={getItemLayout}
+      keyExtractor={keyExtractor}
+      initialNumToRender={20}
+    />
   )
 }
 
