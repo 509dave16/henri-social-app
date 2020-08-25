@@ -8,6 +8,9 @@ class Post extends Model {
       case actions.INSERT_POSTS:
         action.payload.forEach(post => Post.create(post))
         break
+      case actions.DELETE_POST:
+        Post.filter({ id: action.payload.id }).delete()
+        break
     }
   }
 }
