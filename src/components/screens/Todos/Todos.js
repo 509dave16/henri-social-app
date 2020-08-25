@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ScrollView, Text, StyleSheet } from 'react-native'
 import { List } from 'material-bread'
 
+import LoadingIndicator from '../../widgets/LoadingIndicator'
 import Todo from './Todo'
 
 import produce from 'immer'
@@ -30,6 +31,10 @@ function Todos({ todos = mockTodos }) {
         todoToEdit.complete = complete
       })
     })
+  }
+
+  if (todosState.length === 0) {
+    return <LoadingIndicator />
   }
 
   return (

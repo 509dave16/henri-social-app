@@ -3,9 +3,11 @@ import { StyleSheet, ScrollView } from 'react-native'
 import { List } from 'material-bread'
 
 import ProfileBanner from '../widgets/ProfileBanner'
+import LoadingIndicator from '../widgets/LoadingIndicator'
 
 import { getUsers } from '../../services/jsonPlaceholder'
 import users from '../../config/mockData/users'
+
 
 const debug = false
 const mockUsers = debug ? users : []
@@ -22,6 +24,10 @@ function Contacts({ users = mockUsers}) {
     !debug && fetchUsers(setUsersState)
     return () => {}
   }, [])
+  
+  if (usersState.length === 0) {
+    return <LoadingIndicator />
+  }
   return (
     <ScrollView>
       <List style={styles.list}>
