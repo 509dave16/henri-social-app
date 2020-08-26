@@ -8,6 +8,16 @@ You can watch a video demonstration [here](https://drive.google.com/file/d/1tP-y
 - You can access the demo app from the Expo Client you have installed on your phone by following this url: https://expo.io/@509dave16/HenriSocial
 - Or by installing this [Android APK](https://drive.google.com/file/d/1pqYshWv64CtEyug1DgqfGhi6iGSa7rRZ/view?usp=sharing) that's hosted on Google Drive
 
+# Local Environment Instructions
+- Install nvm in order to use Node 12.13.1: https://github.com/nvm-sh/nvm#installing-and-updating
+- `nvm install v12.13.1`
+- `nvm use v12.13.1`
+- `git clone git@github.com:509dave16/henri-social-app.git`
+- `cd henri-social-app`
+- `npm i`
+- `expo start`
+- Then either press `i` or `a` to open the app in an iOS Simulator or Android Emulator respectively. In addition, you can also access the local app from your iOS or Android device if you have the Expo Client installed. Just view the QR code in the terminal using your iOS device's camera app. Or by pressing `Scan QR Code` on the **Projects** tab of the Expo Client on Android.
+
 # Additional Packages Used
 - **"@expo/react-native-action-sheet": "^3.8.0"** - Used in conjunction with Post header "more" icon for deleting a Post.
 - **"@kenetto/react-native-action-button": "^2.8.8"** - Used as a FAB on Feed screen for triggering navigation to New Post Modal.
