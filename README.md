@@ -2,8 +2,10 @@
 Social app assessment for Henri Home, including users directory, feed, and todo list tabs, based on instructions found [here](https://github.com/henri-home/henri-mobile-interview-project)
 
 # Demonstration
-You can watch video demonstration here that hosted on Google Drive: https://drive.google.com/file/d/1tP-yUojVkwAZsYqEL18xYNNeP79sR-8K/view?usp=sharing
+You can watch video a demonstration [here](https://drive.google.com/file/d/1tP-yUojVkwAZsYqEL18xYNNeP79sR-8K/view?usp=sharing) that's hosted on Google Drive
 
+# Demo App
+You can access the demo app from the Expo Client you have installed on your phone by following this url: https://expo.io/@509dave16/HenriSocial
 
 # Additional Packages Used
 - **"@expo/react-native-action-sheet": "^3.8.0"** - Used in conjunction with Post header "more" icon for deleting a Post.
