@@ -3,6 +3,7 @@ import  { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import { Image } from 'react-native-elements'
 import { Card, CardActions, CardContent, CardMedia, IconButton, Button, Icon, List, TextField } from 'material-bread'
 import { connectActionSheet } from '@expo/react-native-action-sheet'
+import { useTheme } from '@react-navigation/native';
 
 import ProfileBanner from '../../widgets/ProfileBanner'
 import LoadingIndicator from '../../widgets/LoadingIndicator'
@@ -14,10 +15,13 @@ import * as actions from '../../../state/actions'
 import { getPostComments } from '../../../services/jsonPlaceholder'
 import { postPixelsWidth, postPixelsHeight } from '../../../config/dimensions'
 
-async function fetchComments(post, dispatch, setCommentsFetched) {
+async function fetchComments(post, dispatch, setCommentsFetched, setNoComments) {
   const response = await getPostComments(post.id)
   dispatch(actions.ormInsertComments(response.result))
   setCommentsFetched(true)
+  if (!response.result?.length) {
+    setNoComments(true)
+  }
 }
 
 function getOpenActionSheetArgs(post, dispatch) {
@@ -35,9 +39,11 @@ function getOpenActionSheetArgs(post, dispatch) {
 function Post({ post, comments = [], showActionSheetWithOptions, editMode = false, updatePostField }) {
   const [viewComments, setViewComments] = React.useState(false)
   const [commentsFetched, setCommentsFetched] = React.useState(false)
+  const [noComments, setNoComments] = React.useState(false)
   const dispatch = useDispatch()
+  const { colors } = useTheme()
   React.useEffect(() => {
-    viewComments && !commentsFetched && !comments.length && fetchComments(post, dispatch, setCommentsFetched)
+    viewComments && !commentsFetched && !comments.length && fetchComments(post, dispatch, setCommentsFetched, setNoComments)
     return () => {}
   }, [commentsFetched, viewComments, comments])
 
@@ -57,7 +63,7 @@ function Post({ post, comments = [], showActionSheetWithOptions, editMode = fals
               style={{ width: postPixelsWidth, height: postPixelsHeight }}
               source={{uri: post.upload }}
               resizeMode="cover"
-              PlaceholderContent={<ActivityIndicator />}
+              PlaceholderContent={<ActivityIndicator size='large' color={colors.primary} />}
             />
           }
         />
@@ -121,7 +127,13 @@ function Post({ post, comments = [], showActionSheetWithOptions, editMode = fals
                   />
                 ))}
               </List>
-            ) : (<LoadingIndicator style={styles.loadingIndicator} />)
+            ) : !noComments ? (
+                <LoadingIndicator style={styles.loadingIndicator} />
+              ) : (
+                <View style={styles.noCommentsContainer}>
+                  <Text>No Comments</Text>
+                </View>
+              )
         : null }
       </Card>
     </View>
@@ -131,6 +143,11 @@ function Post({ post, comments = [], showActionSheetWithOptions, editMode = fals
 const styles = StyleSheet.create({
   loadingIndicator: {
     paddingBottom: 20,
+  },
+  noCommentsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
   }
 })
 

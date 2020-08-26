@@ -2,6 +2,7 @@ import * as React from 'react'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Image } from 'react-native-elements'
 import { ListItem, Avatar } from 'material-bread'
+import { useTheme } from '@react-navigation/native'
 
 import _ from 'lodash'
 
@@ -9,13 +10,14 @@ const separator = '/'
 const defaultSize = 40
 
 function getAvatarProps(profileImage, profileImageSize) {
+  const { colors } = useTheme()
   const size = profileImageSize || defaultSize
   const [type, value] = _.split(profileImage, separator)
   if (type === 'icon') {
     return { type, content: value, contentColor: '#ececec', color: '#a3a3a3', size }
   } else if (type === 'https:' || type === 'http:') {
     // console.log('<<<AVATAR - uri', profileImage)
-    return { type: 'image', image: (<Image PlaceholderContent={<ActivityIndicator />} source={{ uri: profileImage }} />), size }
+    return { type: 'image', image: (<Image PlaceholderContent={<ActivityIndicator color={colors.primary} />} source={{ uri: profileImage }} />), size }
   }
 }
 

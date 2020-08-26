@@ -6,7 +6,9 @@ class Comment extends Model {
     const { Comment } = session
     switch(action.type) {
       case actions.INSERT_COMMENTS:
-        action.payload.forEach(comment => Comment.create(comment))
+        if (action.payload?.length) {
+          action.payload.forEach(comment => Comment.create(comment))
+        }
         break
     }
   }
