@@ -63,7 +63,12 @@ function Feed({ posts = mockPosts, users }) {
   const closeAction = (postToInsert) => {
     if (postToInsert) {
       dispatch(actions.ormCreatePost(newPost))
-      ref.current.scrollToOffset({ offset: 0 })
+      // Curently there is a bug with the ref to the FlatList that is also shared with the useScrollToTop hook in production.
+      // From looking around it appears it might be an issue with React Native's Modal.
+      // For now we only call the scrollToOffset in development builds
+      if (ref?.current?.scrollToOffset && __DEV__) {
+        ref.current.scrollToOffset({ offset: 0 })
+      }
     }
     setIsModalOpen(false)
     setNewPost(newPostState(users))
