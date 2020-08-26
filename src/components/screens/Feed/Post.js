@@ -48,13 +48,20 @@ function Post({ post, comments = [], showActionSheetWithOptions, editMode = fals
   }, [commentsFetched, viewComments, comments])
 
   const args = getOpenActionSheetArgs(post, dispatch)
+
+  if (!post) {
+    console.log('<<<POST - no post data')
+  } else if (!post.user) {
+    console.log('<<<POST - no post user data', post)
+  }
+
   return (
     <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 5 }}>
       <Card style={{maxWidth: 400, width: '100%'}}>
         <ProfileBanner
-          profileImage={post.user.profileImage}
-          text={post.user.name}
-          secondaryText={post.user.email}
+          profileImage={post?.user?.profileImage || 'icon/face'}
+          text={post?.user?.name || 'No Name'}
+          secondaryText={post?.user?.email || 'No Email'}
           actionItem={!editMode && <IconButton name="more-vert" size={24} onPress={() => showActionSheetWithOptions(...args)} />}
         />
         <CardMedia
