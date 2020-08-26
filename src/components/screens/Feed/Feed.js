@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { useTheme, useScrollToTop } from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ActionButton from '@kenetto/react-native-action-button'
 import { Icon } from 'material-bread'
 
@@ -54,6 +55,7 @@ const viewabilityConfig = {
 
 function Feed({ posts = mockPosts, users }) {
   const { colors } = useTheme()
+  const insets = useSafeAreaInsets()
   const dispatch = useDispatch()
 
   const ref = React.useRef(null)
@@ -102,7 +104,7 @@ function Feed({ posts = mockPosts, users }) {
       <SaveModal isVisible={isModalOpen} closeAction={closeAction}>
         <Post key={`newPost${newPost.id}`} editMode updatePostField={updatePostField} post={newPost} />
       </SaveModal>
-      <ActionButton buttonColor={colors.primary} renderIcon={MenuIcon}>
+      <ActionButton buttonColor={colors.primary} renderIcon={MenuIcon} offsetY={insets.bottom}>
         <ActionButton.Item title="Add Post" buttonColor={colors.primary} onPress={onItemPress}> 
           <Icon name="image" color="white" size={32} />
         </ActionButton.Item>

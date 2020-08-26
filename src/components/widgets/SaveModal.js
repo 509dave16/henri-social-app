@@ -2,19 +2,19 @@ import * as React from 'react'
 import { View, ScrollView, Modal, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
 import { IconButton, Button, Heading } from 'material-bread'
 import { useTheme } from '@react-navigation/native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 
 function PostSaveModal({ style, isVisible, closeAction, children }) {
   const { colors } = useTheme()
+  const insets = useSafeAreaInsets()
   return (
-     <SafeAreaView>
       <Modal
         animationType='slide'
         visible={isVisible}
         onRequestClose={() => closeAction(false)}
       >
-        <View style={[styles.modalContainer, style]}>
+        <View style={[styles.modalContainer, { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 20 },  style]}>
           <View style={[styles.modalHeader]}>
             <IconButton
               style={styles.closeIcon}
@@ -39,8 +39,6 @@ function PostSaveModal({ style, isVisible, closeAction, children }) {
           </View>
         </View>
       </Modal>
-      </SafeAreaView>
-
   )
 }
 
@@ -58,14 +56,12 @@ const styles = StyleSheet.create({
     color: '#4E4E4E',
   },
   modalHeader: {
-    paddingTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   modalFooter: {
     marginHorizontal: 10,
-    marginBottom: 15,
   },
 })
 
